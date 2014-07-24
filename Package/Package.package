@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="60f7c306-ec4d-49f6-865c-d118b24779e7" solutionId="60f7c306-ec4d-49f6-865c-d118b24779e7" resetWebServer="false" sharePointProductVersion="15.0" name="Nauplius.PAS" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="b66b0bec-1dd2-4376-8598-3ed6440d42d5" />
+  </features>
+  <projectItems>
+    <projectItemReference itemId="7323b4a0-05f0-4169-b21b-fb2cb8366f1e" />
+    <projectItemReference itemId="f4ab7f28-150f-4211-8798-649feee2e654" />
+  </projectItems>
+</package>

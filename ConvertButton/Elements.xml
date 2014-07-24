@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+
+  <CustomAction
+      Id="NaupliusPASRibbonButton"
+      RegistrationId="101"
+      RegistrationType="List"
+      Location="CommandUI.Ribbon"
+      Sequence="6"
+      Title="Convert PowerPoint">
+
+    <CommandUIExtension>
+      <CommandUIDefinitions>
+        <CommandUIDefinition Location="Ribbon.Documents.Groups._children">
+          <Group
+              Id="PPTConversions"
+              Sequence="101"
+              Description="PowerPoint Conversion Control"
+              Title="PowerPoint"
+              Template="PPTConversionsTemplate">
+            <Controls Id="PPTConversionsGroupControl">
+              <Button
+                Id="Ribbon.Documents.New.PASButton"
+                Alt="Convert"
+                Sequence="10"
+                Command="PPTConvert"
+                Image32by32="/_layouts/15/images/Nauplius.PAS/Convert32x32.png"
+                Image16by16="/_layouts/15/images/Nauplius.PAS/Convert16x16.png"
+                LabelText="Convert"
+                TemplateAlias="p1"/>
+            </Controls>
+          </Group>
+        </CommandUIDefinition>
+        <CommandUIDefinition Location="Ribbon.Templates._children">
+          <GroupTemplate Id="PPTConversionsTemplate">
+            <Layout Title="LargeLarge">
+              <OverflowSection Type="OneRow" TemplateAlias="p1" DisplayMode="Large"/>
+            </Layout>
+            <Layout Title="Medium">
+              <OverflowSection Type="OneRow" TemplateAlias="p1" DisplayMode="Medium"/>
+            </Layout>
+            <Layout Title="Small">
+              <OverflowSection Type="OneRow" TemplateAlias="p1" DisplayMode="Small"/>
+            </Layout>
+          </GroupTemplate>
+        </CommandUIDefinition>
+        <CommandUIDefinition Location="Ribbon.Documents.Scaling._children">
+          <MaxSize Id="Ribbon.Documents.Scaling.Custom.MaxSize" Sequence="15" GroupId="PPTConversions" Size="LargeLarge" />
+        </CommandUIDefinition>
+        <CommandUIDefinition Location="Ribbon.Documents.Scaling._children">
+          <Scale Id="Ribbon.Documents.Scaling.Custom.MaxSize" Sequence="15" GroupId="PPTConversions" Size="Medium"/>
+        </CommandUIDefinition>
+        <CommandUIDefinition Location="Ribbon.Documents.Scaling._children">
+          <Scale Id="Ribbon.Documents.Scaling.Custom.MaxSize" Sequence="15" GroupId="PPTConversions" Size="Small"/>
+        </CommandUIDefinition>
+      </CommandUIDefinitions>
+
+      <CommandUIHandlers>
+        <CommandUIHandler
+          Command="PPTConvert"
+          EnabledScript="javascript:
+            SP.ListOperation.Selection.getSelectedItems().length > 0;"
+          CommandAction="javascript:
+            function resultCallback(result, value)
+            {
+              if (result == 1)
+              {
+                SP.UI.Notify.addNotification('Conversion Request Succeeded');
+                SP.UI.ModalDialog.RefreshPage(SP.UI.DialogResult.OK);
+              }
+              else if (result == 2)
+              {
+                SP.UI.Notify.addNotification('Conversion Request Failed');
+              }
+              else if (result == 3)
+              {
+                SP.UI.Notify.addNotification('Conversion Request Cancelled');
+              }
+            }
+ 
+            var ctx = SP.ClientContext.get_current();
+            var items = SP.ListOperation.Selection.getSelectedItems(ctx);
+            var cItems = '';
+            var i;
+ 
+            for (i in items)
+            {
+              cItems += '|' + items[i].id;
+            }
+ 
+            if(cItems != '')
+            {
+              var options = {
+              url: '{SiteUrl}/_layouts/15/Nauplius.PAS/Convert.aspx?Items=' + cItems + '&amp;ListId={SelectedListId}&amp;Source={Source}',
+              allowMaximize: true,
+              showClose: true,
+              width: 900,
+              height: 460,
+              dialogReturnValueCallback: resultCallback};
+              SP.UI.ModalDialog.showModalDialog(options);
+            }" />
+      </CommandUIHandlers>
+    </CommandUIExtension>
+  </CustomAction>
+<!--
+  <CustomAction
+  Id="NaupliusPASFolder"
+  RegistrationId="0x0120"
+  RegistrationType="ContentType"
+  Location="EditControlBlock"
+  Sequence="11"
+  Title="Convert PowerPoint"
+  ImageUrl="/_layouts/15/Images/Nauplius.PAS/Convert16x16.png">
+    <UrlAction
+      Url="javascript:OpenPopUpPageWithTitle('{SiteUrl}/_layouts/15/Nauplius.PAS/Folder.aspx?List={ListId}&amp;url={SiteUrl}&amp;item={ItemId};itemurl={ItemUrl}', RefreshOnDialogClose, 600, 400, 'Convert Folder')"/>
+  </CustomAction>
+  -->
+</Elements>
